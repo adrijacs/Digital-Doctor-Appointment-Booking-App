@@ -1,7 +1,7 @@
 import User from "../models/UserSchema.js";
 
 export const updateUser = async (req, res) => {
-  const id = req.param.id;
+  const { id } = req.params;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
@@ -38,9 +38,9 @@ export const deleteUser = async (req, res) => {
 };
 
 export const getSingleUser = async (req, res) => {
-  const id = req.param.id;
+  const { id } = req.params;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).select("-password");
     res.status(200).json({
       success: true,
       message: "User Found",
