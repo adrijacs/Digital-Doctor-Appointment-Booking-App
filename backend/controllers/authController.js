@@ -63,31 +63,39 @@ export const register = async (req, res) => {
   }
 };
 export const login = async (req, res) => {
-  const { email } = req.body;
+  const { email, password } = req.body;
+
   try {
+    console.log("Received login request for email:", email);
+
     let user = null;
     const patient = await User.findOne({ email });
     const doctor = await Doctor.findOne({ email });
+
     if (patient) {
       user = patient;
     }
     if (doctor) {
       user = doctor;
     }
+
     if (!user) {
+      console.log("User not found for email:", email);
       return res.status(404).json({ message: "User not found" });
     }
-    const isPasswordMatch = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
     if (!isPasswordMatch) {
+      console.log("Invalid password for user:", email);
       return res
         .status(400)
         .json({ status: false, message: "Invalid credentials" });
     }
+
     const token = generateToken(user);
-    const { password, role, appointments, ...rest } = user._doc;
+    const { password: userPassword, role, appointments, ...rest } = user._doc;
+
     res.status(200).json({
       status: true,
       message: "Successfully login",
@@ -96,6 +104,7 @@ export const login = async (req, res) => {
       role,
     });
   } catch (err) {
+    console.error("Error during login process:", err.message); // Log the error message
     res.status(500).json({ status: false, message: "Failed to login" });
   }
 };
