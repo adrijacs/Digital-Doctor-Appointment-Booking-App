@@ -14,6 +14,7 @@ const DoctorDashboard = () => {
     `${BASE_URL}/doctors/profile/me`
   );
   const [tab, setTab] = useState("overview");
+
   return (
     <section>
       <div className="max-w-[1170px] px-5 mx-auto">
@@ -82,7 +83,7 @@ const DoctorDashboard = () => {
                   </div>
                 )}
                 {tab === "appointments" && (
-                  <Appointments appoinments={data.appoinments} />
+                  <Appointments appointments={data.appointments} />
                 )}
                 {tab === "settings" && (
                   <div>

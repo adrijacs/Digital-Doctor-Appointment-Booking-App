@@ -42,6 +42,7 @@ const Appointments = ({ appointments }) => {
                 </div>
               </div>
             </th>
+            <td className="px-6 py-4">{item.user.gender}</td>
             <td className="px-6 py-4">
               {item.isPaid && (
                 <div className="flex items-center">

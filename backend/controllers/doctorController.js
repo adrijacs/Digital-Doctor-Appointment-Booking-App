@@ -99,7 +99,10 @@ export const getDoctorProfile = async (req, res) => {
     }
 
     const { password, ...rest } = doctor._doc;
-    const appointments = await Booking.find({ doctor: doctorId });
+    const appointments = await Booking.find({ doctor: doctorId }).populate(
+      "user",
+      "name email photo"
+    );
     res.status(200).json({
       success: true,
       message: "Profile info is retrieved",
